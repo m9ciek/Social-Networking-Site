@@ -6,8 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -15,19 +16,19 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class UserDTO {
 
-    @NotNull
-    @NotEmpty
+    @NotBlank(message = "First name cannot be empty")
     private String firstName;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank(message = "Last name cannot be empty")
     private String lastName;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank(message = "Email cannot be empty")
+    @Email(message = "Please enter correct email")
     private String email;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank(message = "Password cannot be empty")
+    @Size(min = 6, max = 16, message = "Password must be between 6 and 16 characters")
     private String password;
+
+
 }

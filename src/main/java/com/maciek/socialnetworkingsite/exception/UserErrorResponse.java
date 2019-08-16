@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,6 +16,6 @@ public class UserErrorResponse {
 
     private int status;
     private String message;
-    private long timestamp;
+    private Date date;
 
 }
