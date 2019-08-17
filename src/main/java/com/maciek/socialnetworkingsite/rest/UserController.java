@@ -3,7 +3,7 @@ package com.maciek.socialnetworkingsite.rest;
 import com.maciek.socialnetworkingsite.dto.UserDTO;
 import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.EmailExistsException;
-import com.maciek.socialnetworkingsite.exception.UserErrorResponse;
+import com.maciek.socialnetworkingsite.exception.response.UserErrorResponse;
 import com.maciek.socialnetworkingsite.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

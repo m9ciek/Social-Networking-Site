@@ -1,4 +1,4 @@
-package com.maciek.socialnetworkingsite.exception;
+package com.maciek.socialnetworkingsite.exception.response;
 
 
 import lombok.AllArgsConstructor;

@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/social_network_database?serverTimezone=UTC
+    username: springstudent
+    password: springstudent
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
