@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,6 +28,7 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> findAllUsers(){
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName()); //getting current logged user
         return ResponseEntity.ok(userService.getAllUsers());
     }
 

@@ -1,6 +1,7 @@
 package com.maciek.socialnetworkingsite.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,9 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
+
+    @JsonIgnore
+    private Long id;
 
     @NotBlank(message = "First name cannot be empty")
     private String firstName;
