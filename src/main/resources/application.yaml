@@ -7,3 +7,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
+  security:
+    oauth2:
+      client:
+        registration:
+          facebook:
+            clientId: 1100724033470323
+            clientSecret: 60667a83ae3bb4a3124bd58e170194b3
