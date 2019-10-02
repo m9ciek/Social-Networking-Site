@@ -41,6 +41,8 @@ public class DefaultUserService implements UserService {
         user.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
 
         return userRepository.save(user);
+
+        //comment for testing git
     }
 
     @Override
