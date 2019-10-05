@@ -26,20 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select email, password, '1' from user where email=?") //email, password, enabled
-                .authoritiesByUsernameQuery("select email, 'ROLE_USER' from user where email=?") //App does not use roles, hardcoded
-                .passwordEncoder(passwordEncoder());
-    }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/main").authenticated()
-                .and()
-                .formLogin()
-                .and()
-                .csrf().disable();
+        http.authorizeRequests().anyRequest().permitAll().and().csrf().disable();
     }
 }
