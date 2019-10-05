@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
@@ -28,13 +29,17 @@ public class UserController {
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> findAllUsers(){
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName()); //getting current logged user
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @PostMapping("/register")
     public ResponseEntity registerUser(@RequestBody @Valid UserDTO userDTO){
         return ResponseEntity.ok(userService.registerNewUser(userDTO));
+    }
+
+    @GetMapping("/main")
+    public String welcomeUser(Principal principal){
+        return "Welcome " + principal.getName();
     }
 
     @ExceptionHandler
