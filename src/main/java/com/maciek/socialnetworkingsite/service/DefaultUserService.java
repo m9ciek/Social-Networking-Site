@@ -5,8 +5,6 @@ import com.maciek.socialnetworkingsite.dto.UserDTO;
 import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.EmailExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -56,13 +54,13 @@ public class DefaultUserService implements UserService {
     public User login(UserDTO userDTO) {
         Optional<User> userFromDb = userRepository.findByEmail(userDTO.getEmail());
 
-        if(userFromDb.isEmpty() || wrongPassword(userFromDb, userDTO)){
+        if(userFromDb.isEmpty() || wrongPassword(userFromDb.get(), userDTO)){
             throw new RuntimeException("User not found or wrong Password");
         }
         return userFromDb.get();
     }
 
-    private boolean wrongPassword(Optional<User> userFromDb, UserDTO userDTO) {
-        return !passwordEncoder.matches(userDTO.getPassword(), userFromDb.get().getPassword());
+    boolean wrongPassword(User userFromDb, UserDTO userDTO) {
+        return !passwordEncoder.matches(userDTO.getPassword(), userFromDb.getPassword());
     }
 }
