@@ -9,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +25,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/users")
     public ResponseEntity<List<User>> findAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
@@ -38,8 +37,18 @@ public class UserController {
     }
 
     @GetMapping("/main")
-    public String welcomeUser(Principal principal){
-        return "Welcome " + principal.getName();
+    public String welcomeUser(){
+        return "Welcome!";
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody UserDTO userDTO){
+        try {
+            userService.login(userDTO);
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @ExceptionHandler

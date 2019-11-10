@@ -5,7 +5,6 @@ import com.maciek.socialnetworkingsite.exception.EmailNotFoundException;
 import com.maciek.socialnetworkingsite.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,7 +27,6 @@ public class PostController {
 
     @PostMapping("/main/post")
     public ResponseEntity addNewPost(@RequestHeader("email") String userEmail, @RequestBody @Valid String postBody){
-        String loggedInUser = SecurityContextHolder.getContext().getAuthentication().getName(); //getting current logged user
         try{
             Post postToAdd = postService.addNewPost(userEmail, postBody);
             return ResponseEntity.ok(postToAdd);
