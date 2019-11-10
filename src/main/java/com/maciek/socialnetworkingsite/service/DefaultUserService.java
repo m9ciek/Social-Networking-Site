@@ -48,4 +48,19 @@ public class DefaultUserService implements UserService {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    @Override
+    @Transactional
+    public User login(UserDTO userDTO) {
+        Optional<User> userFromDb = userRepository.findByEmail(userDTO.getEmail());
+
+        if(userFromDb.isEmpty() || wrongPassword(userFromDb.get(), userDTO)){
+            throw new RuntimeException("User not found or wrong Password");
+        }
+        return userFromDb.get();
+    }
+
+    boolean wrongPassword(User userFromDb, UserDTO userDTO) {
+        return !passwordEncoder.matches(userDTO.getPassword(), userFromDb.getPassword());
+    }
 }
