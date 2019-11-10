@@ -25,6 +25,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/users")
     public ResponseEntity<List<User>> findAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
