@@ -3,10 +3,14 @@ package com.maciek.socialnetworkingsite.security;
 import com.maciek.socialnetworkingsite.dao.UserRepository;
 import com.maciek.socialnetworkingsite.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class LoginDetailsService implements UserDetailsService {
@@ -23,4 +27,14 @@ public class LoginDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(s).orElseThrow(()-> new UsernameNotFoundException(s));
         return LoginDetails.builder().username(user.getEmail()).password(user.getPassword()).build();
     }
+
+    public User getLoggedUser() throws SecurityException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> loggedUser = userRepository.findByEmail(authentication.getName());
+        if(loggedUser.isPresent()){
+            return loggedUser.get();
+        }
+        throw new SecurityException("User was not found in database");
+    }
+
 }

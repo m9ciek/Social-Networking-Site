@@ -4,11 +4,13 @@ import com.maciek.socialnetworkingsite.dto.UserDTO;
 import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.EmailExistsException;
 import com.maciek.socialnetworkingsite.exception.response.UserErrorResponse;
+import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,10 +21,12 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private LoginDetailsService loginDetailsService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, LoginDetailsService loginDetailsService) {
         this.userService = userService;
+        this.loginDetailsService = loginDetailsService;
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
@@ -38,7 +42,8 @@ public class UserController {
 
     @GetMapping("/main")
     public String welcomeUser(){
-        return "Welcome!";
+        User loggedUser = loginDetailsService.getLoggedUser();
+        return "Welcome " + loggedUser.getFirstName() + " " + loggedUser.getLastName()+ "!";
     }
 
     @ExceptionHandler
