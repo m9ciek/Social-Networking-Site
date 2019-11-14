@@ -46,22 +46,22 @@ class UserServiceTest {
         Assertions.assertThrows(EmailExistsException.class, () -> defaultUserService.registerNewUser(userDTO));
     }
 
-    @Test
-    void shouldThrowExceptionWhenUserNotFound(){
-        Mockito.when(userRepositoryMock.findByEmail(anyString())).thenReturn(Optional.empty());
-        UserDTO userDTO = new UserDTO();
-
-        Assertions.assertThrows(RuntimeException.class, ()-> defaultUserService.login(userDTO));
-    }
-
-    @Test
-    void shouldReturnTrueWhenWrongPassword(){
-        User userFromDb = new User();
-        userFromDb.setPassword("12345");
-
-        UserDTO userToLogin = new UserDTO();
-        userToLogin.setPassword("qwe123");
-        Mockito.when(passwordEncoderMock.matches(anyString(),anyString())).thenReturn(false);
-        Assertions.assertTrue(defaultUserService.wrongPassword(userFromDb,userToLogin));
-    }
+//    @Test
+//    void shouldThrowExceptionWhenUserNotFound(){
+//        Mockito.when(userRepositoryMock.findByEmail(anyString())).thenReturn(Optional.empty());
+//        UserDTO userDTO = new UserDTO();
+//
+//        Assertions.assertThrows(RuntimeException.class, ()-> defaultUserService.login(userDTO));
+//    }
+//
+//    @Test
+//    void shouldReturnTrueWhenWrongPassword(){
+//        User userFromDb = new User();
+//        userFromDb.setPassword("12345");
+//
+//        UserDTO userToLogin = new UserDTO();
+//        userToLogin.setPassword("qwe123");
+//        Mockito.when(passwordEncoderMock.matches(anyString(),anyString())).thenReturn(false);
+//        Assertions.assertTrue(defaultUserService.wrongPassword(userFromDb,userToLogin));
+//    }
 }

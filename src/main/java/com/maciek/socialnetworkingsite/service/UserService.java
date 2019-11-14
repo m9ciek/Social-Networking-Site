@@ -10,5 +10,4 @@ import java.util.List;
 public interface UserService {
     User registerNewUser(UserDTO accountDTO) throws EmailExistsException;
     List<User> getAllUsers();
-    User login(UserDTO userDTO);
 }

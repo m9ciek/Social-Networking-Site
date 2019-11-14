@@ -26,7 +26,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().permitAll().and().csrf().disable();
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication()
+                .dataSource(dataSource).passwordEncoder(passwordEncoder())
+                .usersByUsernameQuery("select email,password, '1' from user where email=?")
+                .authoritiesByUsernameQuery("select email, 'ROLE_USER' from user where email=?");
+
+        //Change that with userDetailsService
     }
+
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/main").authenticated()
+                .antMatchers("/*").permitAll()
+                .antMatchers("/main/**").authenticated()
+                .and().httpBasic()
+                .and().formLogin().disable()
+                .csrf().disable();
+    }
+
 }

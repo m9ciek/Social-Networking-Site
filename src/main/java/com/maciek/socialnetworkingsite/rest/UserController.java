@@ -41,16 +41,6 @@ public class UserController {
         return "Welcome!";
     }
 
-    @PostMapping("/login")
-    public ResponseEntity login(@RequestBody UserDTO userDTO){
-        try {
-            userService.login(userDTO);
-        }catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        return ResponseEntity.ok().build();
-    }
-
     @ExceptionHandler
     private ResponseEntity<UserErrorResponse> handleUserEmailException(EmailExistsException e){
         UserErrorResponse response = new UserErrorResponse();
