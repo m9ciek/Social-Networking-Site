@@ -26,4 +26,6 @@ public class Post {
 
     @NonNull
     private LocalDateTime date;
+
+    private String imageURL;
 }
