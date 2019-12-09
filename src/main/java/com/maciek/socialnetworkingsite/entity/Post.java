@@ -3,6 +3,7 @@ package com.maciek.socialnetworkingsite.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -22,4 +23,7 @@ public class Post {
 
     @NonNull
     private String body;
+
+    @NonNull
+    private LocalDateTime date;
 }

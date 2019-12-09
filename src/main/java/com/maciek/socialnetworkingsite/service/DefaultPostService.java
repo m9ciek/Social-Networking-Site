@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -28,6 +29,7 @@ public class DefaultPostService implements PostService {
         Post post = new Post();
         post.setUser(userRepository.findByEmail(userEmail).orElseThrow(EmailNotFoundException::new));
         post.setBody(body);
+        post.setDate(LocalDateTime.now());
         postRepository.save(post);
         return post;
     }
