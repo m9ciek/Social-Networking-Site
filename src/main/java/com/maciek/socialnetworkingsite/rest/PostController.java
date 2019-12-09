@@ -7,6 +7,7 @@ import com.maciek.socialnetworkingsite.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,10 +30,11 @@ public class PostController {
     }
 
     @PostMapping("/main/post")
-    public ResponseEntity addNewPost(@RequestBody @Valid String postBody){
+    public ResponseEntity addNewPost(@RequestBody @Valid String postBody,
+                                     @RequestParam(value = "image", required = false) MultipartFile image){
         String userEmail = loginDetailsService.getLoggedUser().getEmail();
         try{
-            Post postToAdd = postService.addNewPost(userEmail, postBody);
+            Post postToAdd = postService.addNewPost(userEmail, postBody, image);
             return ResponseEntity.ok(postToAdd);
         } catch (EmailNotFoundException e){
             return ResponseEntity.notFound().build();
