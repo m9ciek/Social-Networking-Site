@@ -43,9 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/main").authenticated()
                 .antMatchers("/*").permitAll()
                 .antMatchers("/main/**").authenticated()
+                .antMatchers("/login").permitAll()
                 .and().httpBasic()
-                .and().formLogin().disable()
-                .logout().logoutSuccessUrl("/users");//subject to change
+                .and().formLogin()
+                .and().logout();
 
     }
 
