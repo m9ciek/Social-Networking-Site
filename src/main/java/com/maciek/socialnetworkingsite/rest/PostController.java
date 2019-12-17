@@ -30,15 +30,12 @@ public class PostController {
     }
 
     @PostMapping("/main/post")
-    public ResponseEntity addNewPost(@RequestBody @Valid String postBody,
+    public ResponseEntity addNewPost(@RequestParam(value = "body") @Valid String postBody,
                                      @RequestParam(value = "image", required = false) MultipartFile image){
+
         String userEmail = loginDetailsService.getLoggedUser().getEmail();
-        try{
-            Post postToAdd = postService.addNewPost(userEmail, postBody, image);
-            return ResponseEntity.ok(postToAdd);
-        } catch (EmailNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
+        Post postToAdd = postService.addNewPost(userEmail, postBody, image);
+        return ResponseEntity.ok(postToAdd);
     }
 
 }

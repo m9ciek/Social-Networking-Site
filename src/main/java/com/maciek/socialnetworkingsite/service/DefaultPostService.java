@@ -4,6 +4,7 @@ import com.maciek.socialnetworkingsite.dao.PostRepository;
 import com.maciek.socialnetworkingsite.dao.UserRepository;
 import com.maciek.socialnetworkingsite.entity.Post;
 import com.maciek.socialnetworkingsite.exception.EmailNotFoundException;
+import com.maciek.socialnetworkingsite.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,27 +24,23 @@ public class DefaultPostService implements PostService {
 
     private PostRepository postRepository;
     private UserRepository userRepository;
+    private StorageService storageService;
 
     @Autowired
-    public DefaultPostService(PostRepository postRepository, UserRepository userRepository) {
+    public DefaultPostService(PostRepository postRepository, UserRepository userRepository, StorageService storageService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.storageService = storageService;
     }
 
     @Override
     @Transactional
-    public Post addNewPost(String userEmail, String body, MultipartFile image) {
+    public Post addNewPost(String userEmail, String body, MultipartFile image) throws EmailNotFoundException{
         Post post = new Post();
         post.setUser(userRepository.findByEmail(userEmail).orElseThrow(EmailNotFoundException::new));
         post.setBody(body);
         post.setDate(LocalDateTime.now());
-        if(image!=null) {
-            try {
-                addImage(image, post);
-            } catch (IOException e) {
-                e.getMessage();
-            }
-        }
+        post.setImageURL(storageService.store(image));
         postRepository.save(post);
         return post;
     }
@@ -54,15 +51,4 @@ public class DefaultPostService implements PostService {
         return postRepository.findAll();
     }
 
-    private void addImage(MultipartFile file, Post post) throws IOException {
-        if(file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/png")) {
-            String resourcesPath = System.getProperty("user.dir")+ "/uploads";
-            String fileName = file.getOriginalFilename();
-            Path path = Paths.get(resourcesPath, fileName);
-            Files.write(path, file.getBytes());
-            post.setImageURL(path.toString().trim());
-        }else{
-            throw new IOException("Wrong file type or something went wrong");
-        }
-    }
 }
