@@ -33,14 +33,18 @@ public class DefaultUserService implements UserService {
         if(databaseUser.isPresent()){
             throw new EmailExistsException("User with email:" + databaseUser.get().getEmail() +" already exists.");
         }
+        User user = mapDtoToUser(accountDTO);
 
+        return userRepository.save(user);
+    }
+
+    public User mapDtoToUser(UserDTO accountDTO) {
         User user = new User();
         user.setFirstName(accountDTO.getFirstName());
         user.setLastName(accountDTO.getLastName());
         user.setEmail(accountDTO.getEmail());
         user.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
-
-        return userRepository.save(user);
+        return user;
     }
 
     @Override
