@@ -13,6 +13,7 @@ A website where users have the ability to add posts, comments and view other peo
 * **Endpoints**
 
  See all users -  |`GET`| - /users <br />
+ Show welcome page with logged in user -  |`GET`| - /main <br />
  Register new user - |`POST`| - /register
  
  * **Post params:** <br />
@@ -24,12 +25,13 @@ A website where users have the ability to add posts, comments and view other peo
  
 **Post**
 ----
- Add new post while logged in.
+ Add new post - must have an account and be logged in.
 
 * **Endpoints**
 
  Add new post - |`POST`| - /main/post
  
- * **Data param:** <br />
-  `body=[String]`
+ * **Post param:** <br />
+  `body=[String]`<br />
+  `image=[file/jpg/png]` - optional <br />
 
