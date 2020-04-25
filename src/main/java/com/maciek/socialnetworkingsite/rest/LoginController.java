@@ -17,21 +17,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoginController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
+    private JwtUtilService jwtUtilService;
+    private LoginDetailsService loginDetailsService;
 
     @Autowired
-    JwtUtilService jwtUtilService;
-
-    @Autowired
-    LoginDetailsService loginDetailsService;
+    public LoginController(AuthenticationManager authenticationManager, JwtUtilService jwtUtilService, LoginDetailsService loginDetailsService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtilService = jwtUtilService;
+        this.loginDetailsService = loginDetailsService;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
         try{
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
-            );
+            ); //checks if credentials are valid
         }catch (BadCredentialsException e){
             throw new Exception("Invalid username or password", e);
         }
