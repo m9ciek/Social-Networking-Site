@@ -25,13 +25,12 @@ public class DefaultUserService implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     @Override
     @Transactional
     public User registerNewUser(UserDTO accountDTO) throws EmailExistsException {
         Optional<User> databaseUser = userRepository.findByEmail(accountDTO.getEmail());
         if(databaseUser.isPresent()){
-            throw new EmailExistsException("User with email:" + databaseUser.get().getEmail() +" already exists.");
+            throw new EmailExistsException("User with email: " + databaseUser.get().getEmail() +" already exists.");
         }
         User user = mapDtoToUser(accountDTO);
 

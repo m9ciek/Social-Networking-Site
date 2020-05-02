@@ -1,4 +1,4 @@
-package com.maciek.socialnetworkingsite.exception.response;
+package com.maciek.socialnetworkingsite.exception;
 
 
 import lombok.AllArgsConstructor;
@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import java.util.Date;
 public class UserErrorResponse {
 
     private int status;
-    private String message;
+    private List<String> errors;
     private Date date;
 
 }

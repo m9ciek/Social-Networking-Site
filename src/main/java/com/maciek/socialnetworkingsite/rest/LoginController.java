@@ -1,5 +1,6 @@
 package com.maciek.socialnetworkingsite.rest;
 
+import com.maciek.socialnetworkingsite.exception.AuthenticationFailedException;
 import com.maciek.socialnetworkingsite.security.*;
 import com.maciek.socialnetworkingsite.security.jwt.AuthenticationRequest;
 import com.maciek.socialnetworkingsite.security.jwt.AuthenticationResponse;
@@ -10,11 +11,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class LoginController {
 
     private AuthenticationManager authenticationManager;
@@ -35,7 +38,7 @@ public class LoginController {
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             ); //checks if credentials are valid
         }catch (BadCredentialsException e){
-            throw new Exception("Invalid username or password", e);
+            throw new AuthenticationFailedException("Incorrect username or password.");
         }
         final UserDetails userDetails = loginDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = jwtUtilService.createToken(userDetails);
