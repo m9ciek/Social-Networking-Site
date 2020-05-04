@@ -1,9 +1,11 @@
 package com.maciek.socialnetworkingsite.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @RequiredArgsConstructor
@@ -23,5 +25,8 @@ public class User {
     @JsonIgnore
     private String password;
 
+    @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+    @JsonBackReference
+    private List<Post> posts;
 
 }

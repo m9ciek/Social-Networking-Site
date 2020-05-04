@@ -3,6 +3,7 @@ package com.maciek.socialnetworkingsite.service;
 import com.maciek.socialnetworkingsite.dao.PostRepository;
 import com.maciek.socialnetworkingsite.dao.UserRepository;
 import com.maciek.socialnetworkingsite.entity.Post;
+import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.EmailNotFoundException;
 import com.maciek.socialnetworkingsite.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,19 @@ public class DefaultPostService implements PostService {
     @Transactional
     public Post addNewPost(String userEmail, String body, MultipartFile image) throws EmailNotFoundException{
         Post post = new Post();
-        post.setUser(userRepository.findByEmail(userEmail).orElseThrow(EmailNotFoundException::new));
+        User user = userRepository.findByEmail(userEmail).orElseThrow(EmailNotFoundException::new);
+
+        post.setUser(user);
         post.setBody(body);
         post.setDate(LocalDateTime.now());
         post.setImageURL(storageService.store(image));
         postRepository.save(post);
+
+        List<Post> userPosts = user.getPosts();
+        userPosts.add(post);
+        user.setPosts(userPosts);
+        userRepository.save(user);
+
         return post;
     }
 
