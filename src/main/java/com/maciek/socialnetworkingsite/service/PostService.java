@@ -8,4 +8,5 @@ import java.util.List;
 public interface PostService {
     Post addNewPost(String username, String body, MultipartFile image);
     List<Post> getAllPosts();
+    List<Post> getPostsForUser(long userId);
 }

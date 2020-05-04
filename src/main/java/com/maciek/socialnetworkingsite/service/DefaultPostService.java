@@ -7,6 +7,7 @@ import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.EmailNotFoundException;
 import com.maciek.socialnetworkingsite.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +19,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,4 +62,13 @@ public class DefaultPostService implements PostService {
         return postRepository.findAll();
     }
 
+    @Override
+    @Transactional
+    public List<Post> getPostsForUser(long userId) {
+        Optional<User> userFromDb = userRepository.findById(userId);
+        if(userFromDb.isEmpty()){
+            throw new UsernameNotFoundException("User with id: " + userId + " has not been found in database");
+        }
+        return userFromDb.get().getPosts();
+    }
 }
