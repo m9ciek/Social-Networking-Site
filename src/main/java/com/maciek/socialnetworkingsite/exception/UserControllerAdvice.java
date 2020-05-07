@@ -3,6 +3,7 @@ package com.maciek.socialnetworkingsite.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -28,6 +29,19 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
         response.setDate(new Date());
 
         return new ResponseEntity<>(response, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<UserErrorResponse> handleUsernameNotFoundException(UsernameNotFoundException e){
+        List<String> errorMessages = new ArrayList<>();
+        errorMessages.add(e.getMessage());
+
+        UserErrorResponse response = new UserErrorResponse();
+        response.setStatus(HttpStatus.NOT_FOUND.value());
+        response.setErrors(errorMessages);
+        response.setDate(new Date());
+
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler

@@ -17,9 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,7 +57,9 @@ public class DefaultPostService implements PostService {
     @Override
     @Transactional
     public List<Post> getAllPosts() {
-        return postRepository.findAll();
+        List<Post> listOfAllPosts = postRepository.findAll();
+        Collections.sort(listOfAllPosts, Collections.reverseOrder(Comparator.comparing(Post::getDate))); //default sorting from newest to oldest
+        return listOfAllPosts;
     }
 
     @Override

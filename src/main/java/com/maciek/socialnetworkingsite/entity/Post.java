@@ -25,6 +25,7 @@ public class Post {
     private User user;
 
     @NonNull
+    @Column(name = "body", length = 2000)
     private String body;
 
     @NonNull
