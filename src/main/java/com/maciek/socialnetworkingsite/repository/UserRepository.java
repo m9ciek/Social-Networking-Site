@@ -1,4 +1,4 @@
-package com.maciek.socialnetworkingsite.dao;
+package com.maciek.socialnetworkingsite.repository;
 
 import com.maciek.socialnetworkingsite.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

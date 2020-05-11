@@ -1,6 +1,6 @@
 package com.maciek.socialnetworkingsite.security;
 
-import com.maciek.socialnetworkingsite.dao.UserRepository;
+import com.maciek.socialnetworkingsite.repository.UserRepository;
 import com.maciek.socialnetworkingsite.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
