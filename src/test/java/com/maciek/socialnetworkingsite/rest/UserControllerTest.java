@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.maciek.socialnetworkingsite.dto.UserDTO;
 import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.EmailExistsException;
+import com.maciek.socialnetworkingsite.exception.UserErrorResponse;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.service.UserService;
 import org.hamcrest.Matchers;
@@ -99,11 +100,11 @@ class UserControllerTest {
         doThrow(EmailExistsException.class).when(userServiceMock).registerNewUser(any(UserDTO.class));
 
         ObjectMapper mapper = new ObjectMapper();
-        String jsonUser = mapper.writeValueAsString(userDTO);
+        String jsonResponse = mapper.writeValueAsString(new UserErrorResponse());
 
         mockMvc.perform(post("/register")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(jsonUser)).andExpect(status().isUnprocessableEntity());
+                .content(jsonResponse)).andExpect(status().isUnprocessableEntity());
 //                .andExpect(jsonPath("$.message").exists());
 
         verify(userServiceMock).registerNewUser(any(UserDTO.class));
