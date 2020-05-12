@@ -40,9 +40,9 @@ public class PostController {
         return ResponseEntity.ok(postToAdd);
     }
 
-    @GetMapping("/posts/{id}")
-    public ResponseEntity<List<Post>> showPostsForUser(@PathVariable long id){
-        return ResponseEntity.ok(postService.getPostsForUser(id));
+    @GetMapping("/posts/{userId}")
+    public ResponseEntity<List<Post>> showPostsForUser(@PathVariable long userId){
+        return ResponseEntity.ok(postService.getPostsForUser(userId));
     }
 
     @PostMapping("/posts/comment")
