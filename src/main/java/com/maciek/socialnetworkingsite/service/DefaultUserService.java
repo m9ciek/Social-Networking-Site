@@ -1,9 +1,10 @@
 package com.maciek.socialnetworkingsite.service;
 
-import com.maciek.socialnetworkingsite.repository.UserRepository;
 import com.maciek.socialnetworkingsite.dto.UserDTO;
+import com.maciek.socialnetworkingsite.dto.mapper.UserDtoMapper;
 import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.EmailExistsException;
+import com.maciek.socialnetworkingsite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,7 +18,6 @@ import java.util.Optional;
 public class DefaultUserService implements UserService {
 
     private UserRepository userRepository;
-
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -33,18 +33,8 @@ public class DefaultUserService implements UserService {
         if(databaseUser.isPresent()){
             throw new EmailExistsException("User with email: " + databaseUser.get().getEmail() +" already exists.");
         }
-        User user = mapDtoToUser(accountDTO);
-
+        User user = UserDtoMapper.mapDtoToUser(accountDTO, passwordEncoder);
         return userRepository.save(user);
-    }
-
-    public User mapDtoToUser(UserDTO accountDTO) {
-        User user = new User();
-        user.setFirstName(accountDTO.getFirstName());
-        user.setLastName(accountDTO.getLastName());
-        user.setEmail(accountDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
-        return user;
     }
 
     @Override

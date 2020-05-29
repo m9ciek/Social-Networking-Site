@@ -77,12 +77,10 @@ public class DefaultPostService implements PostService {
     @Override
     @Transactional
     public Comment addNewComment(String content, long postId, long userId) throws RuntimeException {
-        Optional<Post> postFromDb = postRepository.findById(postId);
-        if(postFromDb.isEmpty()){
-            throw new RuntimeException("Post with id: " + postId + " has not been found in database");
-        }
+        Post post = getSinglePostById(postId);
+
         Comment newComment = new Comment();
-        newComment.setPostId(postId);
+        newComment.setPostId(post.getId());
         newComment.setContent(content);
         newComment.setCreated(LocalDateTime.now());
         newComment.setUserId(userId);
@@ -90,4 +88,20 @@ public class DefaultPostService implements PostService {
 
         return newComment;
     }
+
+    @Override
+    @Transactional
+    public List<Comment> getCommentsForPostId(long id) {
+        Post post = getSinglePostById(id);
+        return post.getComments();
+    }
+
+    private Post getSinglePostById(long postId) {
+        Optional<Post> postFromDb = postRepository.findById(postId);
+        if (postFromDb.isEmpty()) {
+            throw new RuntimeException("Post with id: " + postId + " has not been found in database");
+        }
+        return postFromDb.get();
+    }
+
 }

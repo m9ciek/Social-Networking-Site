@@ -1,5 +1,7 @@
 package com.maciek.socialnetworkingsite.rest;
 
+import com.maciek.socialnetworkingsite.dto.PostDTO;
+import com.maciek.socialnetworkingsite.dto.mapper.PostDtoMapper;
 import com.maciek.socialnetworkingsite.entity.Comment;
 import com.maciek.socialnetworkingsite.entity.Post;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;
@@ -27,11 +29,17 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<Post>> showAllPosts(){
-        return ResponseEntity.ok(postService.getAllPosts());
+    public ResponseEntity<List<PostDTO>> showAllPosts(){
+        List<Post> posts = postService.getAllPosts();
+        return ResponseEntity.ok(PostDtoMapper.mapToPostDtos(posts));
     }
 
-    @PostMapping("/main/post")
+    @GetMapping("/posts/user/{userId}")
+    public ResponseEntity<List<PostDTO>> showPostsForUser(@PathVariable long userId){
+        return ResponseEntity.ok(PostDtoMapper.mapToPostDtos(postService.getPostsForUser(userId)));
+    }
+
+    @PostMapping("/posts")
     public ResponseEntity addNewPost(@RequestParam(value = "body") @Valid String postBody,
                                      @RequestParam(value = "image", required = false) MultipartFile image){
 
@@ -40,12 +48,18 @@ public class PostController {
         return ResponseEntity.ok(postToAdd);
     }
 
-    @GetMapping("/posts/{userId}")
-    public ResponseEntity<List<Post>> showPostsForUser(@PathVariable long userId){
-        return ResponseEntity.ok(postService.getPostsForUser(userId));
+    @GetMapping("/posts/{postId}/comments")
+    public ResponseEntity<?> getCommentsForPostId(@PathVariable long postId){
+        List<Comment> comments;
+        try{
+             comments = postService.getCommentsForPostId(postId);
+        }catch (RuntimeException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(comments);
     }
 
-    @PostMapping("/posts/comment")
+    @PostMapping("/posts/comments")
     public ResponseEntity<Comment> addNewComment(@RequestParam long postId, @RequestBody String content){
         long userId = loginDetailsService.getLoggedUser().getId();
         Comment newComment;

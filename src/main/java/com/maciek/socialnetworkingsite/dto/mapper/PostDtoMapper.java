@@ -23,6 +23,7 @@ public class PostDtoMapper {
                 .body(post.getBody())
                 .imageURL(post.getImageURL())
                 .created(post.getCreated())
+                .comments(post.getComments())
                 .build();
     }
 }

@@ -1,7 +1,7 @@
 package com.maciek.socialnetworkingsite.rest;
 
 import com.maciek.socialnetworkingsite.exception.AuthenticationFailedException;
-import com.maciek.socialnetworkingsite.security.*;
+import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.security.jwt.AuthenticationRequest;
 import com.maciek.socialnetworkingsite.security.jwt.AuthenticationResponse;
 import com.maciek.socialnetworkingsite.security.jwt.JwtUtilService;

@@ -10,5 +10,6 @@ public interface PostService {
     Post addNewPost(String username, String body, MultipartFile image);
     List<Post> getAllPosts();
     List<Post> getPostsForUser(long userId);
-    Comment addNewComment(String content, long postId, long userId) throws RuntimeException;
+    Comment addNewComment(String content, long postId, long userId);
+    List<Comment> getCommentsForPostId(long id);
 }

@@ -1,15 +1,14 @@
 package com.maciek.socialnetworkingsite.service;
 
-import com.maciek.socialnetworkingsite.repository.UserRepository;
 import com.maciek.socialnetworkingsite.dto.UserDTO;
 import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.EmailExistsException;
+import com.maciek.socialnetworkingsite.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,8 +17,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -47,21 +46,6 @@ class DefaultUserServiceTest {
     void setUp(){
         this.user = new User(1L,"Foo","Bar", "foo@bar.com","qwe123", null);
         this.userDTO = new UserDTO(1L,"Foo","Bar", "foo@bar.com","password");
-    }
-
-    @Test
-    void shouldMapDtoToEntity(){
-        when(passwordEncoderMock.encode(anyString())).thenReturn("qwe123");
-        //then - compare each field except id
-        assertTrue(new ReflectionEquals(user,"id").matches(userService.mapDtoToUser(userDTO)));
-    }
-
-    @Test
-    void shouldReturnRegisteredUser(){
-        when(userServiceMock.mapDtoToUser(any(UserDTO.class))).thenReturn(user);
-        when(userRepositoryMock.save(any(User.class))).thenReturn(user);
-
-        assertEquals(user,userService.registerNewUser(userDTO));
     }
 
     @Test
