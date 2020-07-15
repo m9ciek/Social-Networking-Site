@@ -1,7 +1,7 @@
 package com.maciek.socialnetworkingsite.rest;
 
-import com.maciek.socialnetworkingsite.dto.PostDTO;
-import com.maciek.socialnetworkingsite.dto.mapper.PostDtoMapper;
+import com.maciek.socialnetworkingsite.rest.dto.PostDTO;
+import com.maciek.socialnetworkingsite.rest.dto.mapper.PostDtoMapper;
 import com.maciek.socialnetworkingsite.entity.Comment;
 import com.maciek.socialnetworkingsite.entity.Post;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;

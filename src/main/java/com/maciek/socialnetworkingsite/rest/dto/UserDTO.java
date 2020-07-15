@@ -1,21 +1,16 @@
-package com.maciek.socialnetworkingsite.dto;
+package com.maciek.socialnetworkingsite.rest.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Data
+@Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class UserDTO {
 
-    private Long id;
+    private long id;
 
     @NotBlank(message = "First name cannot be empty")
     private String firstName;
@@ -30,6 +25,5 @@ public class UserDTO {
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 6, max = 16, message = "Password must be between 6 and 16 characters")
     private String password;
-
 
 }

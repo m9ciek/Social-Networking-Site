@@ -1,6 +1,6 @@
-package com.maciek.socialnetworkingsite.dto.mapper;
+package com.maciek.socialnetworkingsite.rest.dto.mapper;
 
-import com.maciek.socialnetworkingsite.dto.PostDTO;
+import com.maciek.socialnetworkingsite.rest.dto.PostDTO;
 import com.maciek.socialnetworkingsite.entity.Post;
 
 import java.util.List;

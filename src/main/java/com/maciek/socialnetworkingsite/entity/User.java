@@ -1,8 +1,9 @@
 package com.maciek.socialnetworkingsite.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -16,17 +17,14 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private long id;
     private String firstName;
     private String lastName;
     private String email;
-
-    @JsonIgnore
     private String password;
 
-    @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
-    @JsonBackReference
+    @OneToMany
+    @JoinColumn(name = "userId")
     private List<Post> posts;
 
 }

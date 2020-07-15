@@ -1,7 +1,8 @@
 package com.maciek.socialnetworkingsite.rest;
 
-import com.maciek.socialnetworkingsite.dto.UserDTO;
+import com.maciek.socialnetworkingsite.rest.dto.UserDTO;
 import com.maciek.socialnetworkingsite.entity.User;
+import com.maciek.socialnetworkingsite.rest.dto.mapper.UserDTOMapper;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    private UserService userService;
-    private LoginDetailsService loginDetailsService;
+    private final UserService userService;
+    private final LoginDetailsService loginDetailsService;
 
     @Autowired
     public UserController(UserService userService, LoginDetailsService loginDetailsService) {
@@ -25,8 +26,15 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> findAllUsers(){
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(required = false) Integer page){
+        int pageNumber = page !=null && page > 0 ? page : 0;
+        return ResponseEntity.ok(UserDTOMapper.mapToUserDTOs(userService.getUsers(pageNumber)));
+    }
+
+    @GetMapping("/users/posts")
+    public ResponseEntity<List<User>> getUsersWithPosts(@RequestParam(required = false) Integer page){
+        int pageNumber = page !=null && page > 0 ? page : 0;
+        return ResponseEntity.ok(userService.getUsersWithPosts(pageNumber));
     }
 
     @PostMapping("/register")

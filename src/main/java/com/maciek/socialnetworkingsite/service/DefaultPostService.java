@@ -42,7 +42,7 @@ public class DefaultPostService implements PostService {
         Post post = new Post();
         User user = userRepository.findByEmail(userEmail).orElseThrow(EmailNotFoundException::new);
 
-        post.setUser(user);
+//        post.setUser(user);
         post.setBody(body);
         post.setCreated(LocalDateTime.now());
         post.setImageURL(storageService.store(image));

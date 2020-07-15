@@ -1,4 +1,4 @@
-package com.maciek.socialnetworkingsite.dto;
+package com.maciek.socialnetworkingsite.rest.dto;
 
 import com.maciek.socialnetworkingsite.entity.Comment;
 import lombok.Builder;

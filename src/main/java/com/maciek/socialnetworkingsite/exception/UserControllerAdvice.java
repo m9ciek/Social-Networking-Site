@@ -19,7 +19,7 @@ import java.util.List;
 public class UserControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
-    private ResponseEntity<UserErrorResponse> handleUserEmailException(EmailExistsException e){
+    private ResponseEntity<UserErrorResponse> handleUserEmailException(UserExistsException e){
         List<String> errorMessages = new ArrayList<>();
         errorMessages.add(e.getMessage());
 
