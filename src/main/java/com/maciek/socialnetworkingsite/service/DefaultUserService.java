@@ -1,14 +1,11 @@
 package com.maciek.socialnetworkingsite.service;
 
 import com.maciek.socialnetworkingsite.entity.Post;
-import com.maciek.socialnetworkingsite.repository.PostRepository;
-import com.maciek.socialnetworkingsite.rest.dto.UserDTO;
-import com.maciek.socialnetworkingsite.rest.dto.mapper.UserDTOMapper;
 import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.UserExistsException;
+import com.maciek.socialnetworkingsite.repository.PostRepository;
 import com.maciek.socialnetworkingsite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,7 +21,7 @@ public class DefaultUserService implements UserService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private static final int PAGE_SIZE = 10;
 
@@ -36,14 +33,15 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User registerNewUser(UserDTO accountDTO){
-//        Optional<User> databaseUser = userRepository.findByEmail(accountDTO.getEmail());
-////        if(databaseUser.isPresent()){
-////            throw new UserExistsException("User with email: " + databaseUser.get().getEmail() +" already exists.");
-////        }
-////        User user = UserDTOMapper.mapDtoToUser(accountDTO, passwordEncoder);
-////        return userRepository.save(user);
-        return null;
+    @Transactional
+    public User registerUser(User user){
+        Optional<User> databaseUser = userRepository.findByEmail(user.getEmail());
+        if(databaseUser.isPresent()){
+            throw new UserExistsException("User with email: " + databaseUser.get().getEmail() +" already exists.");
+        }
+        user.setId(0);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 
     @Override
@@ -76,5 +74,10 @@ public class DefaultUserService implements UserService {
         }else {
             throw new UsernameNotFoundException("User with id: " + id + " has not been found in database.");
         }
+    }
+
+    @Override
+    public void deleteUser(long id) {
+        userRepository.deleteById(id);
     }
 }

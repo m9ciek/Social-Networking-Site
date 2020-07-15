@@ -11,20 +11,30 @@ public class UserDTOMapper {
     private UserDTOMapper() {
     }
 
-    public static List<UserDTO> mapToUserDTOs(List<User> users) {
+    public static List<UserDTO> mapUsersToDTOs(List<User> users) {
         return users.stream()
-                .map(user -> mapToUserDTO(user))
+                .map(user -> mapUserToDTO(user))
                 .collect(Collectors.toList());
 
     }
 
-    public static UserDTO mapToUserDTO(User user) {
+    public static UserDTO mapUserToDTO(User user) {
         return UserDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .password(user.getPassword())
+                .build();
+    }
+
+    public static User mapDTOtoUser(UserDTO userDTO){
+        return User.builder()
+                .id(userDTO.getId())
+                .email(userDTO.getEmail())
+                .firstName(userDTO.getFirstName())
+                .lastName(userDTO.getLastName())
+                .password(userDTO.getPassword())
                 .build();
     }
 

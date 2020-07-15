@@ -1,6 +1,8 @@
 package com.maciek.socialnetworkingsite.rest.dto;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
+import lombok.Getter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -22,6 +24,7 @@ public class UserDTO {
     @Email(message = "Please enter correct email")
     private String email;
 
+    @JsonIgnore
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 6, max = 16, message = "Password must be between 6 and 16 characters")
     private String password;

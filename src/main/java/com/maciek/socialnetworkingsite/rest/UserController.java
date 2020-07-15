@@ -1,7 +1,7 @@
 package com.maciek.socialnetworkingsite.rest;
 
-import com.maciek.socialnetworkingsite.rest.dto.UserDTO;
 import com.maciek.socialnetworkingsite.entity.User;
+import com.maciek.socialnetworkingsite.rest.dto.UserDTO;
 import com.maciek.socialnetworkingsite.rest.dto.mapper.UserDTOMapper;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.service.UserService;
@@ -28,7 +28,12 @@ public class UserController {
     @GetMapping("/users")
     public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(required = false) Integer page){
         int pageNumber = page !=null && page > 0 ? page : 0;
-        return ResponseEntity.ok(UserDTOMapper.mapToUserDTOs(userService.getUsers(pageNumber)));
+        return ResponseEntity.ok(UserDTOMapper.mapUsersToDTOs(userService.getUsers(pageNumber)));
+    }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable long id){
+        return ResponseEntity.ok(UserDTOMapper.mapUserToDTO(userService.getUserById(id)));
     }
 
     @GetMapping("/users/posts")
@@ -39,8 +44,15 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody @Valid UserDTO userDTO){
-        return new ResponseEntity<>(userService.registerNewUser(userDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.registerUser(UserDTOMapper.mapDTOtoUser(userDTO)), HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity deleteUser(@PathVariable long id){
+        userService.deleteUser(id);
+        return ResponseEntity.ok().build();
+    }
+
 
     @GetMapping("/main")
     public String welcomeUser(){

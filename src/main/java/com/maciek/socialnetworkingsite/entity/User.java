@@ -1,9 +1,7 @@
 package com.maciek.socialnetworkingsite.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class User {
 
     @Id
@@ -21,10 +20,12 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+
+    @JsonIgnore
     private String password;
 
-    @OneToMany
-    @JoinColumn(name = "userId")
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "userId", updatable = false, insertable = false)
     private List<Post> posts;
 
 }
