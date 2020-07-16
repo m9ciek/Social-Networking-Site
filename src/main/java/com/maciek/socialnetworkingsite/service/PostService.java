@@ -7,8 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface PostService {
-    Post addNewPost(String username, String body, MultipartFile image);
-    List<Post> getAllPosts();
+    List<Post> getAllPosts(int page);
+    Post getPostById(long postId);
+    Post addNewPost(long userId, String body, MultipartFile image);
     List<Post> getPostsForUser(long userId);
     Comment addNewComment(String content, long postId, long userId);
     List<Comment> getCommentsForPostId(long id);

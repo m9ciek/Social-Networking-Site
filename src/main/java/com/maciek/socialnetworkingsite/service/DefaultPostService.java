@@ -4,11 +4,13 @@ import com.maciek.socialnetworkingsite.entity.Comment;
 import com.maciek.socialnetworkingsite.entity.Post;
 import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.EmailNotFoundException;
+import com.maciek.socialnetworkingsite.exception.PostNotFoundException;
 import com.maciek.socialnetworkingsite.repository.CommentRepository;
 import com.maciek.socialnetworkingsite.repository.PostRepository;
 import com.maciek.socialnetworkingsite.repository.UserRepository;
 import com.maciek.socialnetworkingsite.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +29,7 @@ public class DefaultPostService implements PostService {
     private UserRepository userRepository;
     private StorageService storageService;
     private CommentRepository commentRepository;
+    private static final int PAGE_SIZE = 20;
 
     @Autowired
     public DefaultPostService(PostRepository postRepository, UserRepository userRepository, StorageService storageService, CommentRepository commentRepository) {
@@ -37,35 +40,22 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    @Transactional
-    public Post addNewPost(String userEmail, String body, MultipartFile image) throws EmailNotFoundException{
-        Post post = new Post();
-        User user = userRepository.findByEmail(userEmail).orElseThrow(EmailNotFoundException::new);
-
-//        post.setUser(user);
-        post.setBody(body);
-        post.setCreated(LocalDateTime.now());
-        post.setImageURL(storageService.store(image));
-        postRepository.save(post);
-
-        List<Post> userPosts = user.getPosts();
-        userPosts.add(post);
-        user.setPosts(userPosts);
-        userRepository.save(user);
-
-        return post;
-    }
-
-    @Override
-    @Transactional
-    public List<Post> getAllPosts() {
-        List<Post> listOfAllPosts = postRepository.findAll();
+    public List<Post> getAllPosts(int page) {
+        List<Post> listOfAllPosts = postRepository.findAllPosts(PageRequest.of(page, PAGE_SIZE));
         listOfAllPosts.sort(Collections.reverseOrder(Comparator.comparing(Post::getCreated))); //default sorting from newest to oldest
         return listOfAllPosts;
     }
 
     @Override
-    @Transactional
+    public Post getPostById(long postId) {
+        Optional<Post> postFromDb = postRepository.findById(postId);
+        if (postFromDb.isEmpty()) {
+            throw new PostNotFoundException("Post with id: " + postId + " has not been found in database");
+        }
+        return postFromDb.get();
+    }
+
+    @Override
     public List<Post> getPostsForUser(long userId) {
         Optional<User> userFromDb = userRepository.findById(userId);
         if(userFromDb.isEmpty()){
@@ -74,10 +64,27 @@ public class DefaultPostService implements PostService {
         return userFromDb.get().getPosts();
     }
 
+
     @Override
     @Transactional
+    public Post addNewPost(long userId, String body, MultipartFile image){
+        Post post = new Post();
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new UsernameNotFoundException("User with id: " + userId + " has not been found in database.")
+        );
+
+        post.setUserId(userId);
+        post.setBody(body);
+        post.setCreated(LocalDateTime.now());
+        post.setImageURL(storageService.store(image));
+        postRepository.save(post);
+
+        return post;
+    }
+
+    @Override
     public Comment addNewComment(String content, long postId, long userId) throws RuntimeException {
-        Post post = getSinglePostById(postId);
+        Post post = getPostById(postId);
 
         Comment newComment = new Comment();
         newComment.setPostId(post.getId());
@@ -90,18 +97,9 @@ public class DefaultPostService implements PostService {
     }
 
     @Override
-    @Transactional
     public List<Comment> getCommentsForPostId(long id) {
-        Post post = getSinglePostById(id);
+        Post post = getPostById(id);
         return post.getComments();
-    }
-
-    private Post getSinglePostById(long postId) {
-        Optional<Post> postFromDb = postRepository.findById(postId);
-        if (postFromDb.isEmpty()) {
-            throw new RuntimeException("Post with id: " + postId + " has not been found in database");
-        }
-        return postFromDb.get();
     }
 
 }

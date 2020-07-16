@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@Builder
 public class Post {
 
     @Id
@@ -22,7 +22,7 @@ public class Post {
     private LocalDateTime created;
     private String imageURL;
 
-    @OneToMany
-    @JoinColumn(name= "postId")
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name= "postId", updatable = false, insertable = false)
     private List<Comment> comments;
 }

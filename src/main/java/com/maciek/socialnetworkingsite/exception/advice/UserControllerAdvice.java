@@ -1,5 +1,8 @@
-package com.maciek.socialnetworkingsite.exception;
+package com.maciek.socialnetworkingsite.exception.advice;
 
+import com.maciek.socialnetworkingsite.exception.AuthenticationFailedException;
+import com.maciek.socialnetworkingsite.exception.UserExistsException;
+import com.maciek.socialnetworkingsite.exception.response.UserErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

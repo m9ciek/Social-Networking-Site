@@ -1,9 +1,10 @@
 package com.maciek.socialnetworkingsite.rest;
 
-import com.maciek.socialnetworkingsite.rest.dto.PostDTO;
-import com.maciek.socialnetworkingsite.rest.dto.mapper.PostDtoMapper;
 import com.maciek.socialnetworkingsite.entity.Comment;
 import com.maciek.socialnetworkingsite.entity.Post;
+import com.maciek.socialnetworkingsite.rest.dto.PostDTO;
+import com.maciek.socialnetworkingsite.rest.dto.mapper.PostDtoMapper;
+import com.maciek.socialnetworkingsite.rest.wrapper.PostCreationRequest;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 public class PostController {
 
-    private PostService postService;
-    private LoginDetailsService loginDetailsService;
+    private final PostService postService;
+    private final LoginDetailsService loginDetailsService;
 
     @Autowired
     public PostController(PostService postService, LoginDetailsService loginDetailsService) {
@@ -28,46 +28,50 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDTO>> showAllPosts(){
-        List<Post> posts = postService.getAllPosts();
-        return ResponseEntity.ok(PostDtoMapper.mapToPostDtos(posts));
+    public ResponseEntity<List<Post>> getAllPosts(@RequestParam(required = false) Integer page){
+        int pageNumber = page != null && page > 0 ? page : 0;
+        List<Post> posts = postService.getAllPosts(pageNumber);
+        return ResponseEntity.ok(posts);
     }
 
-    @GetMapping("/posts/user/{userId}")
-    public ResponseEntity<List<PostDTO>> showPostsForUser(@PathVariable long userId){
-        return ResponseEntity.ok(PostDtoMapper.mapToPostDtos(postService.getPostsForUser(userId)));
+    @GetMapping("/posts/{id}")
+    public ResponseEntity<PostDTO> getPostById(@PathVariable long id){
+        return ResponseEntity.ok(PostDtoMapper.mapPostToDTO(postService.getPostById(id)));
     }
 
     @PostMapping("/posts")
-    public ResponseEntity addNewPost(@RequestParam(value = "body") @Valid String postBody,
+    public ResponseEntity addNewPost(@RequestBody PostCreationRequest postRequest,
                                      @RequestParam(value = "image", required = false) MultipartFile image){
 
-        String userEmail = loginDetailsService.getLoggedUser().getEmail();
-        Post postToAdd = postService.addNewPost(userEmail, postBody, image);
-        return ResponseEntity.ok(postToAdd);
+        return ResponseEntity.ok(postService.addNewPost(postRequest.getUserId(), postRequest.getPostBody(), image));
     }
 
-    @GetMapping("/posts/{postId}/comments")
-    public ResponseEntity<?> getCommentsForPostId(@PathVariable long postId){
-        List<Comment> comments;
-        try{
-             comments = postService.getCommentsForPostId(postId);
-        }catch (RuntimeException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(comments);
+    @GetMapping("/posts/user/{userId}")
+    public ResponseEntity<List<PostDTO>> getPostsForUser(@PathVariable long userId){
+        return ResponseEntity.ok(PostDtoMapper.mapPostsToDTOs(postService.getPostsForUser(userId)));
     }
 
-    @PostMapping("/posts/comments")
-    public ResponseEntity<Comment> addNewComment(@RequestParam long postId, @RequestBody String content){
-        long userId = loginDetailsService.getLoggedUser().getId();
-        Comment newComment;
-        try{
-            newComment = postService.addNewComment(content,postId, userId);
-        }catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return new ResponseEntity<>(newComment, HttpStatus.CREATED);
-    }
+//    @GetMapping("/posts/{postId}/comments")
+//    public ResponseEntity<?> getCommentsForPostId(@PathVariable long postId){
+//        List<Comment> comments;
+//        try{
+//             comments = postService.getCommentsForPostId(postId);
+//        }catch (RuntimeException e){
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+//        }
+//        return ResponseEntity.ok(comments);
+//    }
+//
+//    @PostMapping("/posts/comments")
+//    public ResponseEntity<Comment> addNewComment(@RequestParam long postId, @RequestBody String content){
+//        long userId = loginDetailsService.getLoggedUser().getId();
+//        Comment newComment;
+//        try{
+//            newComment = postService.addNewComment(content,postId, userId);
+//        }catch (RuntimeException e){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+//        return new ResponseEntity<>(newComment, HttpStatus.CREATED);
+//    }
 
 }

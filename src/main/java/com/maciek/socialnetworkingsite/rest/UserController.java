@@ -17,12 +17,10 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final LoginDetailsService loginDetailsService;
 
     @Autowired
-    public UserController(UserService userService, LoginDetailsService loginDetailsService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.loginDetailsService = loginDetailsService;
     }
 
     @GetMapping("/users")
@@ -52,12 +50,4 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok().build();
     }
-
-
-    @GetMapping("/main")
-    public String welcomeUser(){
-        User loggedUser = loginDetailsService.getLoggedUser();
-        return "Welcome " + loggedUser.getFirstName() + " " + loggedUser.getLastName()+ "!";
-    }
-
 }

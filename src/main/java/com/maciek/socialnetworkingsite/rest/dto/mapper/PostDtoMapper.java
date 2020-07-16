@@ -11,19 +11,28 @@ public class PostDtoMapper {
     public PostDtoMapper() {
     }
 
-    public static List<PostDTO> mapToPostDtos(List<Post> posts){
+    public static List<PostDTO> mapPostsToDTOs(List<Post> posts){
         return posts.stream()
-                .map(PostDtoMapper::mapPostToDto)
+                .map(PostDtoMapper::mapPostToDTO)
                 .collect(Collectors.toList());
     }
 
-    private static PostDTO mapPostToDto(Post post){
+    public static PostDTO mapPostToDTO(Post post){
         return PostDTO.builder()
                 .id(post.getId())
                 .body(post.getBody())
                 .imageURL(post.getImageURL())
                 .created(post.getCreated())
-                .comments(post.getComments())
+                .build();
+    }
+
+    public static Post mapDTOToPost(PostDTO postDTO){
+        return Post.builder()
+                .id(postDTO.getId())
+                .id(postDTO.getId())
+                .body(postDTO.getBody())
+                .imageURL(postDTO.getImageURL())
+                .created(postDTO.getCreated())
                 .build();
     }
 }
