@@ -1,9 +1,7 @@
-package com.maciek.socialnetworkingsite.service;
+package com.maciek.socialnetworkingsite.service.post;
 
-import com.maciek.socialnetworkingsite.entity.Comment;
 import com.maciek.socialnetworkingsite.entity.Post;
 import com.maciek.socialnetworkingsite.entity.User;
-import com.maciek.socialnetworkingsite.exception.EmailNotFoundException;
 import com.maciek.socialnetworkingsite.exception.PostNotFoundException;
 import com.maciek.socialnetworkingsite.repository.CommentRepository;
 import com.maciek.socialnetworkingsite.repository.PostRepository;
@@ -82,24 +80,24 @@ public class DefaultPostService implements PostService {
         return post;
     }
 
-    @Override
-    public Comment addNewComment(String content, long postId, long userId) throws RuntimeException {
-        Post post = getPostById(postId);
-
-        Comment newComment = new Comment();
-        newComment.setPostId(post.getId());
-        newComment.setContent(content);
-        newComment.setCreated(LocalDateTime.now());
-        newComment.setUserId(userId);
-        commentRepository.save(newComment);
-
-        return newComment;
-    }
-
-    @Override
-    public List<Comment> getCommentsForPostId(long id) {
-        Post post = getPostById(id);
-        return post.getComments();
-    }
+//    @Override
+//    public Comment addNewComment(String content, long postId, long userId) throws RuntimeException {
+//        Post post = getPostById(postId);
+//
+//        Comment newComment = new Comment();
+//        newComment.setPostId(post.getId());
+//        newComment.setContent(content);
+//        newComment.setCreated(LocalDateTime.now());
+//        newComment.setUserId(userId);
+//        commentRepository.save(newComment);
+//
+//        return newComment;
+//    }
+//
+//    @Override
+//    public List<Comment> getCommentsForPostId(long id) {
+//        Post post = getPostById(id);
+//        return post.getComments();
+//    }
 
 }

@@ -1,4 +1,4 @@
-package com.maciek.socialnetworkingsite.service;
+package com.maciek.socialnetworkingsite.service.user;
 
 
 import com.maciek.socialnetworkingsite.entity.User;

@@ -6,14 +6,14 @@ import com.maciek.socialnetworkingsite.entity.Post;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class PostDtoMapper {
+public class PostDTOMapper {
 
-    public PostDtoMapper() {
+    private PostDTOMapper() {
     }
 
     public static List<PostDTO> mapPostsToDTOs(List<Post> posts){
         return posts.stream()
-                .map(PostDtoMapper::mapPostToDTO)
+                .map(PostDTOMapper::mapPostToDTO)
                 .collect(Collectors.toList());
     }
 

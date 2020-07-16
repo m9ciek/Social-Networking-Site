@@ -1,7 +1,6 @@
 package com.maciek.socialnetworkingsite.entity;
 
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,8 +9,11 @@ import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-@ToString
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Comment {
 
     @Id

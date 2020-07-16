@@ -1,14 +1,12 @@
 package com.maciek.socialnetworkingsite.rest;
 
-import com.maciek.socialnetworkingsite.entity.Comment;
 import com.maciek.socialnetworkingsite.entity.Post;
 import com.maciek.socialnetworkingsite.rest.dto.PostDTO;
-import com.maciek.socialnetworkingsite.rest.dto.mapper.PostDtoMapper;
+import com.maciek.socialnetworkingsite.rest.dto.mapper.PostDTOMapper;
 import com.maciek.socialnetworkingsite.rest.wrapper.PostCreationRequest;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;
-import com.maciek.socialnetworkingsite.service.PostService;
+import com.maciek.socialnetworkingsite.service.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +34,7 @@ public class PostController {
 
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostDTO> getPostById(@PathVariable long id){
-        return ResponseEntity.ok(PostDtoMapper.mapPostToDTO(postService.getPostById(id)));
+        return ResponseEntity.ok(PostDTOMapper.mapPostToDTO(postService.getPostById(id)));
     }
 
     @PostMapping("/posts")
@@ -48,7 +46,7 @@ public class PostController {
 
     @GetMapping("/posts/user/{userId}")
     public ResponseEntity<List<PostDTO>> getPostsForUser(@PathVariable long userId){
-        return ResponseEntity.ok(PostDtoMapper.mapPostsToDTOs(postService.getPostsForUser(userId)));
+        return ResponseEntity.ok(PostDTOMapper.mapPostsToDTOs(postService.getPostsForUser(userId)));
     }
 
 //    @GetMapping("/posts/{postId}/comments")
