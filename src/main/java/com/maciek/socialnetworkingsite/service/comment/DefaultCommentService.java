@@ -5,6 +5,7 @@ import com.maciek.socialnetworkingsite.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,8 @@ public class DefaultCommentService implements CommentService {
 
     @Override
     public Comment addComment(long postId, long userId, String content) {
-        throw new IllegalArgumentException("Method not implemented yet");
+        Comment comment = new Comment(0,postId,userId,content, LocalDateTime.now());
+        return commentRepository.save(comment);
     }
 
     @Override

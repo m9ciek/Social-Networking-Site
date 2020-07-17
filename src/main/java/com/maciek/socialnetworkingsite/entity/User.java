@@ -21,11 +21,15 @@ public class User {
     private String lastName;
     private String email;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "userId", updatable = false, insertable = false)
     private List<Post> posts;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name="userId", updatable = false, insertable = false)
+    private List<Comment> comments;
 
 }

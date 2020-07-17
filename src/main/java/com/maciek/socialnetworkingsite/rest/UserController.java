@@ -3,6 +3,7 @@ package com.maciek.socialnetworkingsite.rest;
 import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.rest.dto.UserDTO;
 import com.maciek.socialnetworkingsite.rest.dto.mapper.UserDTOMapper;
+import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +17,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final LoginDetailsService loginDetailsService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, LoginDetailsService loginDetailsService) {
         this.userService = userService;
+        this.loginDetailsService = loginDetailsService;
     }
 
     @GetMapping("/users")
@@ -44,9 +47,10 @@ public class UserController {
         return new ResponseEntity<>(userService.registerUser(UserDTOMapper.mapDTOtoUser(userDTO)), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/users/{id}")
-    public ResponseEntity deleteUser(@PathVariable long id){
-        userService.deleteUser(id);
+    @DeleteMapping("/users")
+    public ResponseEntity deleteUser(){
+        long userId = loginDetailsService.getLoggedUser().getId();
+        userService.deleteUser(userId);
         return ResponseEntity.ok().build();
     }
 }

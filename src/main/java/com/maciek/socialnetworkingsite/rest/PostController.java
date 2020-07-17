@@ -41,35 +41,13 @@ public class PostController {
     public ResponseEntity addNewPost(@RequestBody PostCreationRequest postRequest,
                                      @RequestParam(value = "image", required = false) MultipartFile image){
 
-        return ResponseEntity.ok(postService.addNewPost(postRequest.getUserId(), postRequest.getPostBody(), image));
+        long loggedUserId = loginDetailsService.getLoggedUser().getId();
+        return ResponseEntity.ok(postService.addNewPost(loggedUserId, postRequest.getPostBody(), image));
     }
 
     @GetMapping("/posts/user/{userId}")
     public ResponseEntity<List<PostDTO>> getPostsForUser(@PathVariable long userId){
         return ResponseEntity.ok(PostDTOMapper.mapPostsToDTOs(postService.getPostsForUser(userId)));
     }
-
-//    @GetMapping("/posts/{postId}/comments")
-//    public ResponseEntity<?> getCommentsForPostId(@PathVariable long postId){
-//        List<Comment> comments;
-//        try{
-//             comments = postService.getCommentsForPostId(postId);
-//        }catch (RuntimeException e){
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-//        }
-//        return ResponseEntity.ok(comments);
-//    }
-//
-//    @PostMapping("/posts/comments")
-//    public ResponseEntity<Comment> addNewComment(@RequestParam long postId, @RequestBody String content){
-//        long userId = loginDetailsService.getLoggedUser().getId();
-//        Comment newComment;
-//        try{
-//            newComment = postService.addNewComment(content,postId, userId);
-//        }catch (RuntimeException e){
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//        return new ResponseEntity<>(newComment, HttpStatus.CREATED);
-//    }
 
 }
