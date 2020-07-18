@@ -3,10 +3,10 @@ package com.maciek.socialnetworkingsite.rest;
 import com.maciek.socialnetworkingsite.entity.Post;
 import com.maciek.socialnetworkingsite.rest.dto.PostDTO;
 import com.maciek.socialnetworkingsite.rest.dto.mapper.PostDTOMapper;
-import com.maciek.socialnetworkingsite.rest.wrapper.PostCreationRequest;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.service.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,11 +38,14 @@ public class PostController {
     }
 
     @PostMapping("/posts")
-    public ResponseEntity addNewPost(@RequestBody PostCreationRequest postRequest,
+    public ResponseEntity<Post> addNewPost(@RequestBody Post post,
                                      @RequestParam(value = "image", required = false) MultipartFile image){
-
-        long loggedUserId = loginDetailsService.getLoggedUser().getId();
-        return ResponseEntity.ok(postService.addNewPost(loggedUserId, postRequest.getPostBody(), image));
+        try {
+            post.setUserId(loginDetailsService.getLoggedUser().getId());
+            return ResponseEntity.ok(postService.addNewPost(post, image));
+        } catch (SecurityException e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/posts/user/{userId}")

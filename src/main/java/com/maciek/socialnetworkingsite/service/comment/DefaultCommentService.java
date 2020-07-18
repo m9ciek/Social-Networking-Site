@@ -1,7 +1,10 @@
 package com.maciek.socialnetworkingsite.service.comment;
 
 import com.maciek.socialnetworkingsite.entity.Comment;
+import com.maciek.socialnetworkingsite.entity.Post;
+import com.maciek.socialnetworkingsite.exception.PostNotFoundException;
 import com.maciek.socialnetworkingsite.repository.CommentRepository;
+import com.maciek.socialnetworkingsite.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,21 +16,26 @@ import java.util.Optional;
 public class DefaultCommentService implements CommentService {
 
     private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     @Autowired
-    public DefaultCommentService(CommentRepository commentRepository) {
+    public DefaultCommentService(CommentRepository commentRepository, PostRepository postRepository) {
         this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
     }
 
     @Override
-    public Comment addComment(long postId, long userId, String content) {
-        Comment comment = new Comment(0,postId,userId,content, LocalDateTime.now());
+    public Comment addComment(Comment comment, long id) {
+        Post post = checkIfPostExistsAndReturn(id);
+        comment.setCreated(LocalDateTime.now());
+        comment.setPostId(post.getId());
         return commentRepository.save(comment);
     }
 
     @Override
     public List<Comment> getAllCommentsForPost(long postId) {
-        Optional<List<Comment>> commentsFromDb = commentRepository.findAllByPostId(postId);
+        Post post = checkIfPostExistsAndReturn(postId);
+        Optional<List<Comment>> commentsFromDb = commentRepository.findAllByPostId(post.getId());
         if(commentsFromDb.isEmpty()){
             return List.of(); //returning empty list
         }
@@ -38,6 +46,12 @@ public class DefaultCommentService implements CommentService {
     public Comment getCommentById(long id) {
         return commentRepository.findById(id).orElseThrow(
                 ()->new RuntimeException("Comment with id:" + id + " has not been found in database")
+        );
+    }
+
+    private Post checkIfPostExistsAndReturn(long postId){
+        return postRepository.findById(postId).orElseThrow(
+                () -> new PostNotFoundException("Post with id: " + postId + " has not been found.")
         );
     }
 }

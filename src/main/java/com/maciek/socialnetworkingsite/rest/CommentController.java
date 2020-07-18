@@ -1,11 +1,12 @@
 package com.maciek.socialnetworkingsite.rest;
 
+import com.maciek.socialnetworkingsite.entity.Comment;
 import com.maciek.socialnetworkingsite.rest.dto.CommentDTO;
 import com.maciek.socialnetworkingsite.rest.dto.mapper.CommentDTOMapper;
-import com.maciek.socialnetworkingsite.rest.wrapper.CommentCreationRequest;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.service.comment.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,11 +34,13 @@ public class CommentController {
         return ResponseEntity.ok(CommentDTOMapper.mapCommentsToDTOs(commentService.getAllCommentsForPost(id)));
     }
 
-    @PostMapping("/comments")
-    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentCreationRequest commentRequest){
-        long userId = loginDetailsService.getLoggedUser().getId();
-        long postId = commentRequest.getPostId();
-        String content = commentRequest.getContent();
-        return ResponseEntity.ok(CommentDTOMapper.mapCommentToDTO(commentService.addComment(postId, userId,content)));
+    @PostMapping("/comments/posts/{id}")
+    public ResponseEntity<Comment> addComment(@RequestBody Comment comment, @PathVariable long id){
+        try {
+            comment.setUserId(loginDetailsService.getLoggedUser().getId());
+            return ResponseEntity.ok(commentService.addComment(comment, id));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

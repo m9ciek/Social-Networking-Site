@@ -61,18 +61,10 @@ public class DefaultPostService implements PostService {
 
     @Override
     @Transactional
-    public Post addNewPost(long userId, String body, MultipartFile image){
-        Post post = new Post();
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new UsernameNotFoundException("User with id: " + userId + " has not been found in database.")
-        );
-        post.setUserId(user.getId());
-        post.setBody(body);
+    public Post addNewPost(Post post, MultipartFile image){
         post.setCreated(LocalDateTime.now());
         post.setImageURL(storageService.store(image));
-        postRepository.save(post);
-
-        return post;
+        return postRepository.save(post);
     }
 
     @Override
