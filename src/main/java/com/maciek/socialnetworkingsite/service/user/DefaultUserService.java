@@ -5,6 +5,7 @@ import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.UserExistsException;
 import com.maciek.socialnetworkingsite.repository.PostRepository;
 import com.maciek.socialnetworkingsite.repository.UserRepository;
+import com.maciek.socialnetworkingsite.rest.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -60,12 +61,6 @@ public class DefaultUserService implements UserService {
         return allUsers;
     }
 
-    private List<Post> extractPost(List<Post> posts, long userId) {
-        return posts.stream()
-                .filter(post -> post.getUserId() == userId)
-                .collect(Collectors.toList());
-    }
-
     @Override
     public User getUserById(long id){
         Optional<User> userFromDatabase = userRepository.findById(id);
@@ -79,5 +74,11 @@ public class DefaultUserService implements UserService {
     @Override
     public void deleteUser(long id) {
         userRepository.deleteById(id);
+    }
+
+    private List<Post> extractPost(List<Post> posts, long userId) {
+        return posts.stream()
+                .filter(post -> post.getUserId() == userId)
+                .collect(Collectors.toList());
     }
 }

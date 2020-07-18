@@ -3,7 +3,6 @@ package com.maciek.socialnetworkingsite.service.post;
 import com.maciek.socialnetworkingsite.entity.Post;
 import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.PostNotFoundException;
-import com.maciek.socialnetworkingsite.repository.CommentRepository;
 import com.maciek.socialnetworkingsite.repository.PostRepository;
 import com.maciek.socialnetworkingsite.repository.UserRepository;
 import com.maciek.socialnetworkingsite.storage.StorageService;
@@ -26,15 +25,13 @@ public class DefaultPostService implements PostService {
     private PostRepository postRepository;
     private UserRepository userRepository;
     private StorageService storageService;
-    private CommentRepository commentRepository;
     private static final int PAGE_SIZE = 20;
 
     @Autowired
-    public DefaultPostService(PostRepository postRepository, UserRepository userRepository, StorageService storageService, CommentRepository commentRepository) {
+    public DefaultPostService(PostRepository postRepository, UserRepository userRepository, StorageService storageService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.storageService = storageService;
-        this.commentRepository = commentRepository;
     }
 
     @Override
@@ -62,7 +59,6 @@ public class DefaultPostService implements PostService {
         return userFromDb.get().getPosts();
     }
 
-
     @Override
     @Transactional
     public Post addNewPost(long userId, String body, MultipartFile image){
@@ -70,8 +66,7 @@ public class DefaultPostService implements PostService {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new UsernameNotFoundException("User with id: " + userId + " has not been found in database.")
         );
-
-        post.setUserId(userId);
+        post.setUserId(user.getId());
         post.setBody(body);
         post.setCreated(LocalDateTime.now());
         post.setImageURL(storageService.store(image));
@@ -80,24 +75,16 @@ public class DefaultPostService implements PostService {
         return post;
     }
 
-//    @Override
-//    public Comment addNewComment(String content, long postId, long userId) throws RuntimeException {
-//        Post post = getPostById(postId);
-//
-//        Comment newComment = new Comment();
-//        newComment.setPostId(post.getId());
-//        newComment.setContent(content);
-//        newComment.setCreated(LocalDateTime.now());
-//        newComment.setUserId(userId);
-//        commentRepository.save(newComment);
-//
-//        return newComment;
-//    }
-//
-//    @Override
-//    public List<Comment> getCommentsForPostId(long id) {
-//        Post post = getPostById(id);
-//        return post.getComments();
-//    }
+    @Override
+    @Transactional
+    public Post updatePost(Post post) {
+        Post postEdited = postRepository.findById(post.getId()).orElseThrow();
+        postEdited.setBody(post.getBody());
+        return postRepository.save(postEdited);
+    }
 
+    @Override
+    public void deletePost(long id) {
+        postRepository.deleteById(id);
+    }
 }

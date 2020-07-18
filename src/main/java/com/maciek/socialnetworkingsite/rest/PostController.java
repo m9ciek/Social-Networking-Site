@@ -50,4 +50,15 @@ public class PostController {
         return ResponseEntity.ok(PostDTOMapper.mapPostsToDTOs(postService.getPostsForUser(userId)));
     }
 
+    @PutMapping("/posts")
+    public ResponseEntity<Post> updatePost(@RequestBody PostDTO postDTO) {
+        return ResponseEntity.ok(postService.updatePost(PostDTOMapper.mapDTOToPost(postDTO))); //any user can modify any post
+    }
+
+    @DeleteMapping("/posts/{id}")
+    public ResponseEntity deletePost(@PathVariable long id) {
+        postService.deletePost(id); //any user can remove
+        return ResponseEntity.ok().build();
+    }
+
 }

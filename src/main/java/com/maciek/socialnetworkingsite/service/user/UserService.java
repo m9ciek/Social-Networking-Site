@@ -2,6 +2,7 @@ package com.maciek.socialnetworkingsite.service.user;
 
 
 import com.maciek.socialnetworkingsite.entity.User;
+import com.maciek.socialnetworkingsite.rest.dto.UserDTO;
 
 import java.util.List;
 

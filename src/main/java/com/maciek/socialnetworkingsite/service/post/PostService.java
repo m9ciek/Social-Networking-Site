@@ -10,4 +10,6 @@ public interface PostService {
     Post getPostById(long postId);
     Post addNewPost(long userId, String body, MultipartFile image);
     List<Post> getPostsForUser(long userId);
+    Post updatePost(Post postToUpdate);
+    void deletePost(long id);
 }
