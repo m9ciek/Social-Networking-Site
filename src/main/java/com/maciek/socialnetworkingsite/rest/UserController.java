@@ -26,29 +26,29 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(required = false) Integer page){
-        int pageNumber = page !=null && page > 0 ? page : 0;
+    public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(required = false) Integer page) {
+        int pageNumber = page != null && page > 0 ? page : 0;
         return ResponseEntity.ok(UserDTOMapper.mapUsersToDTOs(userService.getUsers(pageNumber)));
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable long id){
+    public ResponseEntity<UserDTO> getUserById(@PathVariable long id) {
         return ResponseEntity.ok(UserDTOMapper.mapUserToDTO(userService.getUserById(id)));
     }
 
     @GetMapping("/users/posts")
-    public ResponseEntity<List<User>> getUsersWithPosts(@RequestParam(required = false) Integer page){
-        int pageNumber = page !=null && page > 0 ? page : 0;
+    public ResponseEntity<List<User>> getUsersWithPosts(@RequestParam(required = false) Integer page) {
+        int pageNumber = page != null && page > 0 ? page : 0;
         return ResponseEntity.ok(userService.getUsersWithPosts(pageNumber));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody @Valid UserDTO userDTO){
+    public ResponseEntity<User> registerUser(@RequestBody @Valid UserDTO userDTO) {
         return new ResponseEntity<>(userService.registerUser(UserDTOMapper.mapDTOtoUser(userDTO)), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/users")
-    public ResponseEntity deleteUser(){
+    public ResponseEntity deleteUser() {
         long userId = loginDetailsService.getLoggedUser().getId();
         userService.deleteUser(userId);
         return ResponseEntity.ok().build();

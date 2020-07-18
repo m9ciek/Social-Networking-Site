@@ -1,7 +1,7 @@
 package com.maciek.socialnetworkingsite.security;
 
-import com.maciek.socialnetworkingsite.repository.UserRepository;
 import com.maciek.socialnetworkingsite.entity.User;
+import com.maciek.socialnetworkingsite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,14 +24,14 @@ public class LoginDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(s).orElseThrow(()-> new UsernameNotFoundException(s));
+        User user = userRepository.findByEmail(s).orElseThrow(() -> new UsernameNotFoundException(s));
         return LoginDetails.builder().username(user.getEmail()).password(user.getPassword()).build();
     }
 
     public User getLoggedUser() throws SecurityException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> loggedUser = userRepository.findByEmail(authentication.getName());
-        if(loggedUser.isPresent()){
+        if (loggedUser.isPresent()) {
             return loggedUser.get();
         }
         throw new SecurityException("User was not found in database");

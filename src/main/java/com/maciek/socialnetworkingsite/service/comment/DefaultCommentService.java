@@ -36,7 +36,7 @@ public class DefaultCommentService implements CommentService {
     public List<Comment> getAllCommentsForPost(long postId) {
         Post post = checkIfPostExistsAndReturn(postId);
         Optional<List<Comment>> commentsFromDb = commentRepository.findAllByPostId(post.getId());
-        if(commentsFromDb.isEmpty()){
+        if (commentsFromDb.isEmpty()) {
             return List.of(); //returning empty list
         }
         return commentsFromDb.get();
@@ -45,11 +45,11 @@ public class DefaultCommentService implements CommentService {
     @Override
     public Comment getCommentById(long id) {
         return commentRepository.findById(id).orElseThrow(
-                ()->new RuntimeException("Comment with id:" + id + " has not been found in database")
+                () -> new RuntimeException("Comment with id:" + id + " has not been found in database")
         );
     }
 
-    private Post checkIfPostExistsAndReturn(long postId){
+    private Post checkIfPostExistsAndReturn(long postId) {
         return postRepository.findById(postId).orElseThrow(
                 () -> new PostNotFoundException("Post with id: " + postId + " has not been found.")
         );

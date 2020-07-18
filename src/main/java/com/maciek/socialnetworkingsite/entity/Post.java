@@ -23,6 +23,6 @@ public class Post {
     private String imageURL;
 
     @OneToMany(cascade = CascadeType.REMOVE)
-    @JoinColumn(name= "postId", updatable = false, insertable = false)
+    @JoinColumn(name = "postId", updatable = false, insertable = false)
     private List<Comment> comments;
 }

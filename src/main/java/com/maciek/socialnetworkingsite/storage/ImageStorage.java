@@ -26,7 +26,7 @@ public class ImageStorage implements StorageService {
 
     @Override
     public String store(MultipartFile file) {
-        if(file == null){
+        if (file == null) {
             return null;
         }
 
@@ -37,13 +37,13 @@ public class ImageStorage implements StorageService {
             throw new RuntimeException("Failed to store empty or incorrect file " + filename);
         }
 
-        while(checkIfFileExists(filename)){
+        while (checkIfFileExists(filename)) {
             filename = rename(filename);
         }
 
-        if(fileType.equals("image/jpeg") || fileType.equals("image/png")) {
+        if (fileType.equals("image/jpeg") || fileType.equals("image/png")) {
             try {
-                Path fullPath = Paths.get(rootLocation.toString(),filename);
+                Path fullPath = Paths.get(rootLocation.toString(), filename);
                 Files.write(fullPath, file.getBytes());
                 return fullPath.toString();
             } catch (IOException e) {
@@ -63,13 +63,13 @@ public class ImageStorage implements StorageService {
     }
 
     @Override
-    public boolean checkIfFileExists(String filename){
+    public boolean checkIfFileExists(String filename) {
         Path path = Paths.get(rootLocation.toString(), filename);
         return Files.exists(path);
     }
 
     @Override
-    public String rename(String filename){
+    public String rename(String filename) {
         String[] splittedString = filename.split("\\.");
         Random r = new Random();
         int randomNumber = r.nextInt(10);

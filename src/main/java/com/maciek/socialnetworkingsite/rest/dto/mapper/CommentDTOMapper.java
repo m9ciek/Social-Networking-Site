@@ -11,13 +11,13 @@ public class CommentDTOMapper {
     private CommentDTOMapper() {
     }
 
-    public static List<CommentDTO> mapCommentsToDTOs(List<Comment> comments){
+    public static List<CommentDTO> mapCommentsToDTOs(List<Comment> comments) {
         return comments.stream()
                 .map(CommentDTOMapper::mapCommentToDTO)
                 .collect(Collectors.toList());
     }
 
-    public static CommentDTO mapCommentToDTO(Comment comment){
+    public static CommentDTO mapCommentToDTO(Comment comment) {
         return CommentDTO.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
@@ -25,7 +25,7 @@ public class CommentDTOMapper {
                 .build();
     }
 
-    public static Comment mapDTOToComment(CommentDTO commentDTO){
+    public static Comment mapDTOToComment(CommentDTO commentDTO) {
         return Comment.builder()
                 .id(commentDTO.getId())
                 .content(commentDTO.getContent())

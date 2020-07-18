@@ -5,7 +5,6 @@ import com.maciek.socialnetworkingsite.entity.User;
 import com.maciek.socialnetworkingsite.exception.UserExistsException;
 import com.maciek.socialnetworkingsite.repository.PostRepository;
 import com.maciek.socialnetworkingsite.repository.UserRepository;
-import com.maciek.socialnetworkingsite.rest.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,10 +34,10 @@ public class DefaultUserService implements UserService {
 
     @Override
     @Transactional
-    public User registerUser(User user){
+    public User registerUser(User user) {
         Optional<User> databaseUser = userRepository.findByEmail(user.getEmail());
-        if(databaseUser.isPresent()){
-            throw new UserExistsException("User with email: " + databaseUser.get().getEmail() +" already exists.");
+        if (databaseUser.isPresent()) {
+            throw new UserExistsException("User with email: " + databaseUser.get().getEmail() + " already exists.");
         }
         user.setId(0);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -62,11 +61,11 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public User getUserById(long id){
+    public User getUserById(long id) {
         Optional<User> userFromDatabase = userRepository.findById(id);
-        if(userFromDatabase.isPresent()){
+        if (userFromDatabase.isPresent()) {
             return userFromDatabase.get();
-        }else {
+        } else {
             throw new UsernameNotFoundException("User with id: " + id + " has not been found in database.");
         }
     }

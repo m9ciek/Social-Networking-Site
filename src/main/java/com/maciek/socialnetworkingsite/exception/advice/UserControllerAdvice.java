@@ -22,7 +22,7 @@ import java.util.List;
 public class UserControllerAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
-    private ResponseEntity<UserErrorResponse> handleUserEmailException(UserExistsException e){
+    private ResponseEntity<UserErrorResponse> handleUserEmailException(UserExistsException e) {
         List<String> errorMessages = new ArrayList<>();
         errorMessages.add(e.getMessage());
 
@@ -35,7 +35,7 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler
-    private ResponseEntity<UserErrorResponse> handleUsernameNotFoundException(UsernameNotFoundException e){
+    private ResponseEntity<UserErrorResponse> handleUsernameNotFoundException(UsernameNotFoundException e) {
         List<String> errorMessages = new ArrayList<>();
         errorMessages.add(e.getMessage());
 
@@ -48,7 +48,7 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler
-    private ResponseEntity<UserErrorResponse> handleAuthenticationFailedException(AuthenticationFailedException e){
+    private ResponseEntity<UserErrorResponse> handleAuthenticationFailedException(AuthenticationFailedException e) {
         List<String> errorMessages = new ArrayList<>();
         errorMessages.add(e.getMessage());
 
@@ -63,7 +63,7 @@ public class UserControllerAdvice extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> errorMessages = new ArrayList<>();
-        for(ObjectError error : ex.getBindingResult().getAllErrors()) {
+        for (ObjectError error : ex.getBindingResult().getAllErrors()) {
             errorMessages.add(error.getDefaultMessage());
         }
         UserErrorResponse response = new UserErrorResponse();

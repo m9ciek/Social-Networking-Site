@@ -15,7 +15,7 @@ import java.util.List;
 public class PostControllerAdvice {
 
     @ExceptionHandler
-    public ResponseEntity<PostErrorResponse> handlePostNotFoundException(PostNotFoundException e){
+    public ResponseEntity<PostErrorResponse> handlePostNotFoundException(PostNotFoundException e) {
         List<String> errorMessages = new ArrayList<>();
         errorMessages.add(e.getMessage());
 

@@ -53,7 +53,7 @@ public class DefaultPostService implements PostService {
     @Override
     public List<Post> getPostsForUser(long userId) {
         Optional<User> userFromDb = userRepository.findById(userId);
-        if(userFromDb.isEmpty()){
+        if (userFromDb.isEmpty()) {
             throw new UsernameNotFoundException("User with id: " + userId + " has not been found in database");
         }
         return userFromDb.get().getPosts();
@@ -61,7 +61,7 @@ public class DefaultPostService implements PostService {
 
     @Override
     @Transactional
-    public Post addNewPost(Post post, MultipartFile image){
+    public Post addNewPost(Post post, MultipartFile image) {
         post.setCreated(LocalDateTime.now());
         post.setImageURL(storageService.store(image));
         return postRepository.save(post);

@@ -26,30 +26,30 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<Post>> getAllPosts(@RequestParam(required = false) Integer page){
+    public ResponseEntity<List<Post>> getAllPosts(@RequestParam(required = false) Integer page) {
         int pageNumber = page != null && page > 0 ? page : 0;
         List<Post> posts = postService.getAllPosts(pageNumber);
         return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/posts/{id}")
-    public ResponseEntity<PostDTO> getPostById(@PathVariable long id){
+    public ResponseEntity<PostDTO> getPostById(@PathVariable long id) {
         return ResponseEntity.ok(PostDTOMapper.mapPostToDTO(postService.getPostById(id)));
     }
 
     @PostMapping("/posts")
     public ResponseEntity<Post> addNewPost(@RequestBody Post post,
-                                     @RequestParam(value = "image", required = false) MultipartFile image){
+                                           @RequestParam(value = "image", required = false) MultipartFile image) {
         try {
             post.setUserId(loginDetailsService.getLoggedUser().getId());
             return ResponseEntity.ok(postService.addNewPost(post, image));
-        } catch (SecurityException e){
+        } catch (SecurityException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/posts/user/{userId}")
-    public ResponseEntity<List<PostDTO>> getPostsForUser(@PathVariable long userId){
+    public ResponseEntity<List<PostDTO>> getPostsForUser(@PathVariable long userId) {
         return ResponseEntity.ok(PostDTOMapper.mapPostsToDTOs(postService.getPostsForUser(userId)));
     }
 

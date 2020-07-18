@@ -25,17 +25,17 @@ public class CommentController {
     }
 
     @GetMapping("/comments/{id}")
-    public ResponseEntity<CommentDTO> getCommentById(@PathVariable long id){
+    public ResponseEntity<CommentDTO> getCommentById(@PathVariable long id) {
         return ResponseEntity.ok(CommentDTOMapper.mapCommentToDTO(commentService.getCommentById(id)));
     }
 
     @GetMapping("/comments/posts/{id}")
-    public ResponseEntity<List<CommentDTO>> getCommentsForPostId(@PathVariable long id){
+    public ResponseEntity<List<CommentDTO>> getCommentsForPostId(@PathVariable long id) {
         return ResponseEntity.ok(CommentDTOMapper.mapCommentsToDTOs(commentService.getAllCommentsForPost(id)));
     }
 
     @PostMapping("/comments/posts/{id}")
-    public ResponseEntity<Comment> addComment(@RequestBody Comment comment, @PathVariable long id){
+    public ResponseEntity<Comment> addComment(@RequestBody Comment comment, @PathVariable long id) {
         try {
             comment.setUserId(loginDetailsService.getLoggedUser().getId());
             return ResponseEntity.ok(commentService.addComment(comment, id));

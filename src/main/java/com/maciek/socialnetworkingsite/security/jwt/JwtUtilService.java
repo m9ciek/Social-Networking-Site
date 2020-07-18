@@ -13,7 +13,7 @@ public class JwtUtilService {
 
     private static final String SECRET_KEY = "secret";
 
-    public String createToken(UserDetails userDetails){
+    public String createToken(UserDetails userDetails) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -21,21 +21,21 @@ public class JwtUtilService {
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY).compact();
     }
 
-    public String extractUsername(String token){
+    public String extractUsername(String token) {
         Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
         return claims.getSubject();
     }
 
-    public Date extractExpirationDate(String token){
+    public Date extractExpirationDate(String token) {
         Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
         return claims.getExpiration();
     }
 
-    private Boolean isTokenExpired(String token){
+    private Boolean isTokenExpired(String token) {
         return extractExpirationDate(token).before(new Date());
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails){
+    public Boolean validateToken(String token, UserDetails userDetails) {
         String name = userDetails.getUsername();
         return (!isTokenExpired(token) && extractUsername(token).equals(name));
     }
