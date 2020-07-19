@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class DefaultPostService implements PostService {
+public class PostServiceImpl implements PostService {
 
     private PostRepository postRepository;
     private UserRepository userRepository;
@@ -28,7 +28,7 @@ public class DefaultPostService implements PostService {
     private static final int PAGE_SIZE = 20;
 
     @Autowired
-    public DefaultPostService(PostRepository postRepository, UserRepository userRepository, StorageService storageService) {
+    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, StorageService storageService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.storageService = storageService;

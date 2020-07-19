@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class DefaultUserService implements UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
@@ -26,7 +26,7 @@ public class DefaultUserService implements UserService {
     private static final int PAGE_SIZE = 10;
 
     @Autowired
-    public DefaultUserService(UserRepository userRepository, PostRepository postRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PostRepository postRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.passwordEncoder = passwordEncoder;
