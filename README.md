@@ -1,37 +1,14 @@
-# Social-Networking-Site
-A website where users have the ability to add posts, comments and view other people posts.
+# Social Networking Site
+> A rest backend for a website that allows users to network with each other, 
+share posts, upload images and add comments.
 
-## Project under development
+Java 9, Spring Boot, Spring Security, Spring Data, Hibernate, MySQL, JWT
 
+### Setup 
+* Build project with maven: 'mvn install'
+* Run app using java -jar command: 'java -jar target/social-networking-site-0.0.1-SNAPSHOT.jar'
 
-### Rest endpoints for testing
+#### Api testing
+* Api Documentation - default port 8080: 'http://localhost:8080/swagger-ui.html'
 
-**User**
-----
- Show all users or register new user.
-
-* **Endpoints**
-
- See all users -  |`GET`| - /users <br />
- Show welcome page with logged in user -  |`GET`| - /main <br />
- Register new user - |`POST`| - /register
- 
- * **Post params:** <br />
-  `firstName=[String]` <br />
-  `lastName=[String]` <br />
-  `email=[String]` <br />
-  `password=[String]`
-
- 
-**Post**
-----
- Add new post - must have an account and be logged in.
-
-* **Endpoints**
-
- Add new post - |`POST`| - /main/post
- 
- * **Post param:** <br />
-  `body=[String]`<br />
-  `image=[file/jpg/png]` - optional <br />
-
+###### Unit tests on branch - tests
