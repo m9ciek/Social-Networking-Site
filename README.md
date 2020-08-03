@@ -4,11 +4,41 @@ share posts, upload images and add comments.
 
 Java 9, Spring Boot, Spring Security, Spring Data, Hibernate, MySQL, JWT
 
-### Setup 
+## Setup 
 * Build project with maven: `mvn install`
 * Run app using java -jar command: `java -jar target/social-networking-site-0.0.1-SNAPSHOT.jar`
 
-#### Api testing
+## Api testing
 * Api Documentation - default port 8080: `localhost:8080/swagger-ui.html`
 
-###### Unit tests on branch - tests
+### Open Endpoints
+Open endpoints require no Authentication.
+* Login: `POST /login`
+* Register: `POST /register`
+
+### Endpoints that require Authentication
+
+Closed endpoints require a valid JWT Token to be included in the header of the
+request. A Token can be acquired from the Login view above.
+
+#### User
+* Get all users: `GET /users`
+* Get user: `GET /users/{id}`
+* Delete user: `DELETE /users/{id}`
+* Get users with posts `GET /users/posts`
+
+#### Post
+* Get all posts: `GET /posts`
+* Get post by id: `GET /posts/{id}`
+* Delete post by id: `DELETE /posts/{id}`
+* Add new post: `POST /posts`
+* Update post: `PUT /posts`
+* Get posts for user: `GET /posts/user/{userId}`
+
+#### Comment
+* Add new comment to certain post: `POST /comments/post/{postId}`
+* Get comments for certain post: `GET /comments/post/{postId}`
+* Get comment by id: `GET /comments/{id}`
+
+
+
