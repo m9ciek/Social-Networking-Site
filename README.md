@@ -2,7 +2,7 @@
 > A rest backend for a website that allows users to network with each other, 
 share posts, upload images and add comments.
 
-Java 9, Spring Boot, Spring Security, Spring Data, Hibernate, MySQL, JWT
+Java 11, Spring Framework, Spring Boot, Spring Security, Spring Data, Hibernate, MySQL, JWT
 
 ## Setup 
 * Build project with maven: `mvn install`
@@ -39,6 +39,4 @@ request. A Token can be acquired from the Login view above.
 * Add new comment to certain post: `POST /comments/post/{postId}`
 * Get comments for certain post: `GET /comments/post/{postId}`
 * Get comment by id: `GET /comments/{id}`
-
-
 
