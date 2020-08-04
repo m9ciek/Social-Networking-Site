@@ -4,6 +4,8 @@ share posts, upload images and add comments.
 
 Java 11, Spring Framework, Spring Boot, Spring Security, Spring Data, Hibernate, MySQL, JWT
 
+Tests: JUnit 5 + Mockito
+
 ## Setup 
 * Build project with maven: `mvn install`
 * Run app using java -jar command: `java -jar target/social-networking-site-0.0.1-SNAPSHOT.jar`
