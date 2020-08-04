@@ -48,7 +48,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldRegisterAndReturnUser() {
+    void shouldRegisterAndReturn_registerUser() {
         when(userRepositoryMock.findByEmail(any(String.class))).thenReturn(Optional.empty());
         when(userRepositoryMock.save(this.user)).thenReturn(this.user);
         assertEquals(user, userService.registerUser(this.user));
@@ -57,13 +57,13 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldThrowUserExistsExceptionWhenRegistering() {
+    void shouldThrowUserExistsException_registerUser() {
         when(userRepositoryMock.findByEmail(any(String.class))).thenReturn(Optional.of(this.user));
         assertThrows(UserExistsException.class, () -> userService.registerUser(this.user));
     }
 
     @Test
-    void shouldReturnAllUsers() {
+    void shouldReturnAll_getUsers() {
         User user2 = new User(2L, "Foo", "Bar", "foo@bar.com", "password", null, null);
         User user3 = new User(3L, "Bar", "Foo", "bar@foo.com", "password", null, null);
         List<User> userList = Arrays.asList(this.user, user2, user3);
@@ -77,7 +77,7 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldReturnUsersWithPosts() {
+    void shouldReturn_getUsersWithPosts() {
         Post post = new Post(1L, 2L, "foobar", LocalDateTime.now(), null, null);
         List<Post> userPosts = Arrays.asList(post, post); //same 2 posts in list
 
@@ -97,19 +97,19 @@ class UserServiceTest {
     }
 
     @Test
-    void shouldReturnUserById() {
+    void shouldReturn_getUserById() {
         when(userRepositoryMock.findById(anyLong())).thenReturn(Optional.of(this.user));
         assertEquals(this.user, userService.getUserById(150));
     }
 
     @Test
-    void shouldThrowUserUsernameNotFoundException() {
+    void shouldThrowUsernameNotFoundException_getUserById() {
         when(userRepositoryMock.findById(anyLong())).thenReturn(Optional.empty());
         assertThrows(UsernameNotFoundException.class, () -> userService.getUserById(150));
     }
 
     @Test
-    void shouldInvokeDeleteByIdMethod() {
+    void shouldInvokeDeleteById_deleteUser() {
         doNothing().when(userRepositoryMock).deleteById(anyLong());
         userService.deleteUser(150);
         verify(userRepositoryMock).deleteById(anyLong());
