@@ -1,4 +1,4 @@
-package com.maciek.socialnetworkingsite.unit;
+package com.maciek.socialnetworkingsite.unit.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
