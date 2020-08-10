@@ -1,0 +1,24 @@
+version: '3'
+services:
+  api:
+    build: ../Social-Networking-Site
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+  database:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'social_network_db'
+      MYSQL_USER: 'springstudent'
+      MYSQL_PASSWORD: 'springstudent'
+      MYSQL_ROOT_PASSWORD: 'springstudent'
+    ports:
+      - '3307:3306'
+    expose:
+      - '3307'
+    volumes:
+      - my-db:/var/lib/mysql
+volumes:
+  my-db:
