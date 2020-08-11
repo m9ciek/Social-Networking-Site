@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:mysql://database:3306/social_network_db?serverTimezone=UTC #important: name from docker-compose, port -default 3306
-    username: springstudent
-    password: springstudent
+    username: user
+    password: password
 
   servlet:
     multipart:
