@@ -7,8 +7,8 @@ Java 11, Spring Framework, Spring Boot, Spring Security, Spring Data, Hibernate,
 Tests: JUnit 5 + Mockito
 
 ## Setup 
-* Build project with maven: `mvn install`
-* Run app using java -jar command: `java -jar target/social-networking-site-0.0.1-SNAPSHOT.jar`
+* Build project with maven: `mvn package install`
+* Run the app using docker-compose file: `docker-compose up`
 
 ## Api testing
 * Api Documentation - default port 8080: `localhost:8080/swagger-ui.html`
