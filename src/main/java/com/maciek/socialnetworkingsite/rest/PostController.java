@@ -1,8 +1,8 @@
 package com.maciek.socialnetworkingsite.rest;
 
 import com.maciek.socialnetworkingsite.entity.Post;
-import com.maciek.socialnetworkingsite.rest.dto.PostDTO;
-import com.maciek.socialnetworkingsite.rest.dto.mapper.PostDTOMapper;
+import com.maciek.socialnetworkingsite.dto.PostDTO;
+import com.maciek.socialnetworkingsite.dto.mapper.PostDTOMapper;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.service.post.PostService;
 import org.springframework.beans.factory.annotation.Autowired;

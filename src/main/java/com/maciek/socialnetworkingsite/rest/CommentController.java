@@ -1,8 +1,8 @@
 package com.maciek.socialnetworkingsite.rest;
 
 import com.maciek.socialnetworkingsite.entity.Comment;
-import com.maciek.socialnetworkingsite.rest.dto.CommentDTO;
-import com.maciek.socialnetworkingsite.rest.dto.mapper.CommentDTOMapper;
+import com.maciek.socialnetworkingsite.dto.CommentDTO;
+import com.maciek.socialnetworkingsite.dto.mapper.CommentDTOMapper;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.service.comment.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;

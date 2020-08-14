@@ -1,4 +1,4 @@
-package com.maciek.socialnetworkingsite.rest.dto;
+package com.maciek.socialnetworkingsite.dto;
 
 import lombok.Builder;
 import lombok.Getter;

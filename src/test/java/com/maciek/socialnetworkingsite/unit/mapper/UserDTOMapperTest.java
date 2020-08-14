@@ -1,8 +1,8 @@
 package com.maciek.socialnetworkingsite.unit.mapper;
 
 import com.maciek.socialnetworkingsite.entity.User;
-import com.maciek.socialnetworkingsite.rest.dto.UserDTO;
-import com.maciek.socialnetworkingsite.rest.dto.mapper.UserDTOMapper;
+import com.maciek.socialnetworkingsite.dto.UserDTO;
+import com.maciek.socialnetworkingsite.dto.mapper.UserDTOMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

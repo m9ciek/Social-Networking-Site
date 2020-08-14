@@ -1,8 +1,8 @@
 package com.maciek.socialnetworkingsite.rest;
 
 import com.maciek.socialnetworkingsite.entity.User;
-import com.maciek.socialnetworkingsite.rest.dto.UserDTO;
-import com.maciek.socialnetworkingsite.rest.dto.mapper.UserDTOMapper;
+import com.maciek.socialnetworkingsite.dto.UserDTO;
+import com.maciek.socialnetworkingsite.dto.mapper.UserDTOMapper;
 import com.maciek.socialnetworkingsite.security.LoginDetailsService;
 import com.maciek.socialnetworkingsite.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
